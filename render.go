@@ -30,7 +30,7 @@ func New(opts *Options) *Render {
 func (r *Render) JSON(w http.ResponseWriter, code int, data interface{}) {
 	b, err := json.Marshal(data)
 	if err != nil {
-		r.ServerError(w, err)
+		r.InternalServerError(w, err)
 		return
 	}
 	r.JSONBlob(w, code, b)
@@ -47,7 +47,7 @@ func (r *Render) Blob(w http.ResponseWriter, code int, contentType string, b []b
 	w.Write(b)
 }
 
-func (r *Render) ServerError(w http.ResponseWriter, err error) {
+func (r *Render) InternalServerError(w http.ResponseWriter, err error) {
 	log.Printf("Error occured while encoding to JSON: %v\n", err)
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
